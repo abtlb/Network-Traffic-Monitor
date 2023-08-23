@@ -87,7 +87,6 @@ void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_cha
 	int ihLen = (ih->ver_ihlen & 0xf) * 4;
 	TCPHeader* th = (TCPHeader*)((ihLen + (u_char*)(ih)));//* 4 because fields contains length in words
 	u_short port;
-	std::wstring process;
 	if (compare_addr(destAddr, ip))//incoming packet
 	{
 		inAcc += header->len;
@@ -98,7 +97,8 @@ void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_cha
 		outAcc += header->len;
 		port = ntohs(th->srcPort);
 	}
-	process = pg.PortToProcess(port);
+	auto process = pg.PortToProcess(port);
+	auto test = (pg.PortToProcess(port));
 	map[process] = map[process] + header->len;
 	if (map[process] > maxConsumption)//here the string gets changed for some reason
 	{

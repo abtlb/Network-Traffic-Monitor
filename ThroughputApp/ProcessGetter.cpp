@@ -61,6 +61,6 @@ std::wstring ProcessGetter::IDToProcess(u_short pid)
     }
 
     //only include the process name
-    res += buffer + i + 1;
+    res = buffer + i + 1;
     return res;
 }
