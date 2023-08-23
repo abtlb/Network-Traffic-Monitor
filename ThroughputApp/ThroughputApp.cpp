@@ -155,10 +155,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 //
 
-const wchar_t* inText;
-const wchar_t* outText;
-const wchar_t* processText;
-
+const wchar_t* output;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static bool isDragging = false;
@@ -228,9 +225,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         RECT rect;
         GetClientRect(hWnd, &rect);
         //I draw the text once, remove singleline flag
-        DrawText(hDC, inText, -1, &rect, DT_TOP | DT_SINGLELINE);
-        //DrawText(hDC, processText, -1, &rect, DT_CENTER | DT_SINGLELINE);
-        DrawText(hDC, outText, -1, &rect, DT_BOTTOM | DT_SINGLELINE);
+        DrawText(hDC, output, -1, &rect, DT_CENTER);
     }
     break;
     case WM_DESTROY:
@@ -264,14 +259,24 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 void PrintMessage(double in, double out, wchar_t* process)
 {
-    std::wstring inMessage = L"In: " + DoubleToWString(in, 2) + L" KB/s";
-    inText = inMessage.c_str();
+    //std::wstring inMessage = L"In: " + DoubleToWString(in, 2) + L" KB/s";
+    //inText = inMessage.c_str();
+    //
+    //std::wstring outMessage = L"Out: " + DoubleToWString(out, 2) + L" KB/s";
+    //outText = outMessage.c_str();
+    //
+    //std::wstring processStr(process);
+    //std::wstring processMessage = L"Max process: " + processStr;
+    //processText = processMessage.c_str();
 
-    std::wstring outMessage = L"Out: " + DoubleToWString(out, 2) + L" KB/s";
-    outText = outMessage.c_str();
-    
+    std::wstring message = L"In: " + DoubleToWString(in, 2) + L" KB/s\n";
+    message += L"Out: " + DoubleToWString(out, 2) + L" KB/s\n";
+    std::wstring processStr(process);
+    message += L"Max process: " + processStr;
+    output = message.c_str();
+
     HDC hdc = GetDC(hWnd);
-    SendMessage(hWnd, WM_PRINT, (WPARAM)hdc, PRF_CHECKVISIBLE);
+    SendMessage(hWnd, WM_PRINT, (WPARAM)hdc, 0);
 
     //wcscpy_s(nid.szTip, message.c_str());// Tooltip text
     //
