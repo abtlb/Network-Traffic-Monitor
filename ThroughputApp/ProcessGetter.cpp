@@ -1,4 +1,5 @@
 #include "ProcessGetter.h"
+#include <psapi.h>
 
 void ProcessGetter::InitializeWinsock()
 {
@@ -40,29 +41,18 @@ wchar_t* ProcessGetter::PortToProcess(const u_short& port)
 
 wchar_t* ProcessGetter::IDToProcess(u_short pid)
 {
-    std::string processName;
-    auto snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-    if (snapshot == INVALID_HANDLE_VALUE)
+    HANDLE handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, pid);
+    wchar_t buffer[MAX_PATH];
+    GetModuleFileNameEx(handle, NULL, buffer, MAX_PATH);
+    int i;
+    for (i = 255; i > 0; i--)
     {
-        std::cerr << "err";
-    }
-
-    PROCESSENTRY32 entry;
-    entry.dwSize = sizeof(PROCESSENTRY32);
-    if (Process32First(snapshot, &entry))
-    {
-        do
+        if (buffer[i] == '\\')
         {
-            if (entry.th32ProcessID == pid)
-            {
-                //std::wstring wStr = (std::wstring)(entry.szExeFile);
-                //wStr.c
-                //std::string str(wStr.begin(), wStr.end());
-                return entry.szExeFile;
-            }
-        } while (Process32Next(snapshot, &entry));
+            break;
+        }
     }
 
-    CloseHandle(snapshot);
-    return nullptr;
+    wchar_t* res = buffer + i + 1;//only include the process name
+    return res;
 }

@@ -97,9 +97,7 @@ void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_cha
 	{
 		outAcc += header->len;
 		port = ntohs(th->srcPort);
-		//process = pg.PortToProcess(port);
 	}
-
 	process = pg.PortToProcess(port);
 	map[process] += header->len;
 	if (map[process] > maxConsumption)
