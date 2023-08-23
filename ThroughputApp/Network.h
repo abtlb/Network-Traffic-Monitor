@@ -28,6 +28,6 @@ private:
 };
 
 void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_char* pkt_data);
-void PrintMessage(double in, double out, wchar_t* process);
+void PrintMessage(const double in, const double out, const wchar_t* process);
 
 

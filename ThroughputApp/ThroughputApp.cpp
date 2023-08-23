@@ -257,7 +257,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 
-void PrintMessage(double in, double out, wchar_t* process)
+void PrintMessage(const double in, const double out, const wchar_t* process)
 {
     //std::wstring inMessage = L"In: " + DoubleToWString(in, 2) + L" KB/s";
     //inText = inMessage.c_str();
