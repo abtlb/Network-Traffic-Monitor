@@ -13,7 +13,7 @@ void ProcessGetter::InitializeWinsock()
     }
 }
 
-wchar_t* ProcessGetter::PortToProcess(const u_short& port)
+const wchar_t* ProcessGetter::PortToProcess(const u_short& port)
 {
     MIB_TCPTABLE_OWNER_PID tcpTable;
     DWORD bufferSize = 0;
@@ -39,7 +39,7 @@ wchar_t* ProcessGetter::PortToProcess(const u_short& port)
     }
 }
 
-wchar_t* ProcessGetter::IDToProcess(u_short pid)
+const wchar_t* ProcessGetter::IDToProcess(u_short pid)
 {
     HANDLE handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, pid);
     wchar_t buffer[MAX_PATH];
