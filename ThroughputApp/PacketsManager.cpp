@@ -79,8 +79,6 @@ void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_cha
 	static int maxConsumption = 0;
 	static std::wstring maxProcess;
 	static ProcessGetter pg;
-	
-	//lengthAcc += header->len;
 
 	IPHeader* ih = (IPHeader*)(pkt_data + 14); //ethernet frame length is 14
 	IPAddress* destAddr = &(ih->dstAddr);
@@ -100,7 +98,7 @@ void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_cha
 	auto process = pg.PortToProcess(port);
 	auto test = (pg.PortToProcess(port));
 	map[process] = map[process] + header->len;
-	if (map[process] > maxConsumption)//here the string gets changed for some reason
+	if (map[process] > maxConsumption)
 	{
 		maxConsumption = map[process];
 		maxProcess = process;
@@ -123,18 +121,6 @@ void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_cha
 		outAcc = 0;
 		lastChecked = currTime;
 	}
-
-
-	//print src and dest addresses and ports
-	//IPHeader* ih = (IPHeader*)(pkt_data + 14); //ethernet frame length is 14
-	//int ihLen = (ih->ver_ihlen & 0xf) * 4;
-	//TCPHeader* th = (TCPHeader*)((ihLen + (u_char*)(ih)));//* 4 because fields contains length in words
-	//std::cout << "Source IP: " << (int)ih->srcAddr.byte1 << "." << (int)ih->srcAddr.byte2 << "." << (int)ih->srcAddr.byte3 << "." << (int)ih->srcAddr.byte4 << std::endl;
-	//std::cout << "Destination IP: " << (int)ih->dstAddr.byte1 << "." << (int)ih->dstAddr.byte2 << "." << (int)ih->dstAddr.byte3 << "." << (int)ih->dstAddr.byte4 << std::endl;
-	//std::cout << "Source Port: " << ntohs(th->srcPort) << std::endl;
-	//std::cout << "Destination Port: " << ntohs(th->dstPort) << std::endl;
-
-	
 }
 
 pcap_if_t* PacketManager::get_devices_list()

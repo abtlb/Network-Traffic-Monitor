@@ -259,16 +259,6 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 void PrintMessage(const double in, const double out, std::wstring process)
 {
-    //std::wstring inMessage = L"In: " + DoubleToWString(in, 2) + L" KB/s";
-    //inText = inMessage.c_str();
-    //
-    //std::wstring outMessage = L"Out: " + DoubleToWString(out, 2) + L" KB/s";
-    //outText = outMessage.c_str();
-    //
-    //std::wstring processStr(process);
-    //std::wstring processMessage = L"Max process: " + processStr;
-    //processText = processMessage.c_str();
-
     std::wstring message = L"In: " + DoubleToWString(in, 2) + L" KB/s\n";
     message += L"Out: " + DoubleToWString(out, 2) + L" KB/s\n";
     message += L"Max process: " + process;
@@ -276,10 +266,6 @@ void PrintMessage(const double in, const double out, std::wstring process)
 
     HDC hdc = GetDC(hWnd);
     SendMessage(hWnd, WM_PRINT, (WPARAM)hdc, 0);
-
-    //wcscpy_s(nid.szTip, message.c_str());// Tooltip text
-    //
-    //Shell_NotifyIcon(NIM_MODIFY, &nid);
 }
 
 void ManagePackets()
