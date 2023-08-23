@@ -13,7 +13,7 @@ void ProcessGetter::InitializeWinsock()
     }
 }
 
-const wchar_t* ProcessGetter::PortToProcess(const u_short& port)
+std::wstring ProcessGetter::PortToProcess(const u_short& port)
 {
     MIB_TCPTABLE_OWNER_PID tcpTable;
     DWORD bufferSize = 0;
@@ -39,18 +39,20 @@ const wchar_t* ProcessGetter::PortToProcess(const u_short& port)
     }
 }
 
-const wchar_t* ProcessGetter::IDToProcess(u_short pid)
+std::wstring ProcessGetter::IDToProcess(u_short pid)
 {
+    std::wstring res;
     if (pid == 0)
     {
-        return L"System";
+        res = L"System";
+        return res;
     }
 
     HANDLE handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, pid);
     wchar_t buffer[MAX_PATH];
     GetModuleFileNameEx(handle, NULL, buffer, MAX_PATH);
     int i;
-    for (i = 255; i > 0; i--)
+    for (i = 259; i > 0; i--)
     {
         if (buffer[i] == '\\')
         {
@@ -58,6 +60,7 @@ const wchar_t* ProcessGetter::IDToProcess(u_short pid)
         }
     }
 
-    wchar_t* res = buffer + i + 1;//only include the process name
+    //only include the process name
+    res += buffer + i + 1;
     return res;
 }

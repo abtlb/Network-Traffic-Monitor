@@ -257,7 +257,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 
-void PrintMessage(const double in, const double out, const wchar_t* process)
+void PrintMessage(const double in, const double out, std::wstring process)
 {
     //std::wstring inMessage = L"In: " + DoubleToWString(in, 2) + L" KB/s";
     //inText = inMessage.c_str();
@@ -271,12 +271,7 @@ void PrintMessage(const double in, const double out, const wchar_t* process)
 
     std::wstring message = L"In: " + DoubleToWString(in, 2) + L" KB/s\n";
     message += L"Out: " + DoubleToWString(out, 2) + L" KB/s\n";
-    std::wstring processStr = L"";
-    while (*process != '\0')
-    {
-        processStr += *process++;
-    }
-    message += L"Max process: " + processStr;
+    message += L"Max process: " + process;
     output = message.c_str();
 
     HDC hdc = GetDC(hWnd);

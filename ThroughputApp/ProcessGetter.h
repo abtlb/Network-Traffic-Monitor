@@ -11,8 +11,8 @@
 class ProcessGetter
 {
 public:
-	const wchar_t* PortToProcess(const u_short& port);
+	std::wstring PortToProcess(const u_short& port);
 private:
 	void InitializeWinsock();
-	const wchar_t* IDToProcess(u_short id);
+	std::wstring IDToProcess(u_short id);
 };

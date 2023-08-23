@@ -75,9 +75,9 @@ void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_cha
 	static int outAcc = 0;//outgoing packets accumelator
 	static int lastChecked = clock();
 	static int checkingInterval = 1000;//calculate throughput every 1000 ms
-	static std::unordered_map<wchar_t*, int> map;//process -> consumption
+	static std::unordered_map<std::wstring, int> map;//process -> consumption
 	static int maxConsumption = 0;
-	static wchar_t* maxProcess;
+	static std::wstring maxProcess;
 	static ProcessGetter pg;
 	
 	//lengthAcc += header->len;
@@ -87,7 +87,7 @@ void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_cha
 	int ihLen = (ih->ver_ihlen & 0xf) * 4;
 	TCPHeader* th = (TCPHeader*)((ihLen + (u_char*)(ih)));//* 4 because fields contains length in words
 	u_short port;
-	wchar_t* process;
+	std::wstring process;
 	if (compare_addr(destAddr, ip))//incoming packet
 	{
 		inAcc += header->len;
@@ -99,8 +99,8 @@ void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_cha
 		port = ntohs(th->srcPort);
 	}
 	process = pg.PortToProcess(port);
-	map[process] += header->len;
-	if (map[process] > maxConsumption)
+	map[process] = map[process] + header->len;
+	if (map[process] > maxConsumption)//here the string gets changed for some reason
 	{
 		maxConsumption = map[process];
 		maxProcess = process;
