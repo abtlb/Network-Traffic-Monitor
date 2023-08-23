@@ -41,6 +41,11 @@ const wchar_t* ProcessGetter::PortToProcess(const u_short& port)
 
 const wchar_t* ProcessGetter::IDToProcess(u_short pid)
 {
+    if (pid == 0)
+    {
+        return L"System";
+    }
+
     HANDLE handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, false, pid);
     wchar_t buffer[MAX_PATH];
     GetModuleFileNameEx(handle, NULL, buffer, MAX_PATH);
