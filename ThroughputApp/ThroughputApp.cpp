@@ -262,17 +262,13 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 
-void PrintThroughput(double in, double out, wchar_t* maxProcess)
+void PrintThroughput(double in, double out)
 {
     std::wstring inMessage = L"In: " + DoubleToWString(in, 2) + L" KB/s";
     inText = inMessage.c_str();
 
     std::wstring outMessage = L"Out: " + DoubleToWString(out, 2) + L" KB/s";
     outText = outMessage.c_str();
-
-    std::wstring process(maxProcess);
-    std::wstring processMessage = L"Max user: " + process;
-    processText = processMessage.c_str();
     
     HDC hdc = GetDC(hWnd);
     SendMessage(hWnd, WM_PRINT, (WPARAM)hdc, PRF_CHECKVISIBLE);
