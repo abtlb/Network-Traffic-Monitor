@@ -116,7 +116,7 @@ void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_cha
 		std::cout << "Out: " << outAcc / (double)(timeInterval) << "KB/s" << std::endl;
 		double inRate = inAcc / (double)(timeInterval);
 		double outRate = outAcc / (double)(timeInterval);
-		PrintThroughput(inRate, outRate);
+		PrintMessage(inRate, outRate, process);
 		map.clear();
 		maxConsumption = 0;
 		inAcc = 0;
