@@ -271,7 +271,11 @@ void PrintMessage(const double in, const double out, const wchar_t* process)
 
     std::wstring message = L"In: " + DoubleToWString(in, 2) + L" KB/s\n";
     message += L"Out: " + DoubleToWString(out, 2) + L" KB/s\n";
-    std::wstring processStr(process);
+    std::wstring processStr = L"";
+    while (*process != '\0')
+    {
+        processStr += *process++;
+    }
     message += L"Max process: " + processStr;
     output = message.c_str();
 
