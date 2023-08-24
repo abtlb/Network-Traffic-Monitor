@@ -261,7 +261,7 @@ void PrintMessage(const double in, const double out, std::wstring process)
 {
     std::wstring message = L"In: " + DoubleToWString(in, 2) + L" KB/s\n";
     message += L"Out: " + DoubleToWString(out, 2) + L" KB/s\n";
-    message += L"Max process: " + process;
+    message += L"Max usage process:\n " + process;
     output = message.c_str();
 
     HDC hdc = GetDC(hWnd);

@@ -37,6 +37,8 @@ std::wstring ProcessGetter::PortToProcess(const u_short& port)
         }
         delete[] buffer;
     }
+    const wchar_t* res = L"a7a";
+    return res;
 }
 
 std::wstring ProcessGetter::IDToProcess(u_short pid)
@@ -61,6 +63,7 @@ std::wstring ProcessGetter::IDToProcess(u_short pid)
     }
 
     //only include the process name
-    res = buffer + i + 1;
-    return res;
+    wchar_t* man;
+    man = _wcsdup(buffer + i + 1);
+    return man;
 }

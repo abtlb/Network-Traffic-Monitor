@@ -95,8 +95,7 @@ void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_cha
 		outAcc += header->len;
 		port = ntohs(th->srcPort);
 	}
-	auto process = pg.PortToProcess(port);
-	auto test = (pg.PortToProcess(port));
+	std::wstring process = pg.PortToProcess(port);
 	map[process] = map[process] + header->len;
 	if (map[process] > maxConsumption)
 	{
