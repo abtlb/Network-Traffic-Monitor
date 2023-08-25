@@ -115,7 +115,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
 
-   hWnd = CreateWindowW(szWindowClass, L"Allahu zobry", 0,
+   hWnd = CreateWindowW(szWindowClass, L"Text", 0,
        10, 10, 100, 100, nullptr, nullptr, hInstance, nullptr);
    SetWindowLong(hWnd, GWL_STYLE, 0);
    SetMenu(hWnd, NULL);
@@ -212,7 +212,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code that uses hdc here...
             EndPaint(hWnd, &ps);
         }
         break;
@@ -222,8 +221,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         DWORD dwFlags = (DWORD)lParam;
 
         // Perform custom printing operations
+        //InvalidateRect(hWnd, NULL, true);
         RECT rect;
         GetClientRect(hWnd, &rect);
+        HBRUSH blackBrush = CreateSolidBrush(0);
+        FillRect(hDC, &rect, blackBrush);//to prevent text from overlapping
         //I draw the text once, remove singleline flag
         DrawText(hDC, output, -1, &rect, DT_CENTER);
     }
