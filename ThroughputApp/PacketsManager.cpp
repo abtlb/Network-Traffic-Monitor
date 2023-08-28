@@ -108,9 +108,6 @@ void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_cha
 	int timeInterval = currTime - lastChecked;
 	if (timeInterval >= checkingInterval)
 	{
-
-		std::cout << "In: " << inAcc / (double)(timeInterval) << "KB/s" << std::endl;
-		std::cout << "Out: " << outAcc / (double)(timeInterval) << "KB/s" << std::endl;
 		double inRate = inAcc / (double)(timeInterval);
 		double outRate = outAcc / (double)(timeInterval);
 		PrintMessage(inRate, outRate, process);
