@@ -12,7 +12,12 @@ class ProcessGetter
 {
 public:
 	std::wstring PortToProcess(const u_short& port);
+	~ProcessGetter();
+	ProcessGetter();
 private:
 	void InitializeWinsock();
 	std::wstring IDToProcess(u_short id);
+	PMIB_TCPTABLE2 buffer;
+	int checkingInterval;
+	int lastChecked;
 };

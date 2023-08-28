@@ -13,32 +13,71 @@ void ProcessGetter::InitializeWinsock()
     }
 }
 
+ProcessGetter::ProcessGetter()
+{
+    InitializeWinsock();
+    lastChecked = 0;
+    checkingInterval = 1000;//every 1000ms
+}
+
+ProcessGetter::~ProcessGetter()
+{
+    delete[] buffer;
+}
+
 std::wstring ProcessGetter::PortToProcess(const u_short& port)
 {
-    MIB_TCPTABLE_OWNER_PID tcpTable;
-    DWORD bufferSize = 0;
-    if (GetTcpTable2(nullptr, &bufferSize, TRUE) == ERROR_INSUFFICIENT_BUFFER)
-    {
-        PMIB_TCPTABLE2 buffer = (PMIB_TCPTABLE2)new BYTE[bufferSize];
-        if (GetTcpTable2(buffer, &bufferSize, TRUE) == NO_ERROR)
-        {
+    //MIB_TCPTABLE_OWNER_PID tcpTable;
+    //DWORD bufferSize = 0;
+    //if (GetTcpTable2(nullptr, &bufferSize, TRUE) == ERROR_INSUFFICIENT_BUFFER)
+    //{
+    //    PMIB_TCPTABLE2 buffer = (PMIB_TCPTABLE2)new BYTE[bufferSize];
+    //    if (GetTcpTable2(buffer, &bufferSize, TRUE) == NO_ERROR)
+    //    {
 
-            // Iterate through the TCP connections and find the one using the specified port
-            for (DWORD i = 0; i < buffer->dwNumEntries; ++i)
-            {
-                auto tcpRow = buffer->table[i];
-                auto test = ntohs(tcpRow.dwLocalPort);//delete this
-                if (tcpRow.dwLocalPort == htons(port))//dwLocalPort is in network order
-                {
-                    delete[] buffer;
-                    return IDToProcess(tcpRow.dwOwningPid);
-                }
-            }
-        }
-        delete[] buffer;
+    //        // Iterate through the TCP connections and find the one using the specified port
+    //        for (DWORD i = 0; i < buffer->dwNumEntries; ++i)
+    //        {
+    //            auto tcpRow = buffer->table[i];
+    //            auto test = ntohs(tcpRow.dwLocalPort);//delete this
+    //            if (tcpRow.dwLocalPort == htons(port))//dwLocalPort is in network order
+    //            {
+    //                delete[] buffer;
+    //                //return IDToProcess(tcpRow.dwOwningPid);
+    //                return L"ddf";
+    //            }
+    //        }
+    //    }
+    //    delete[] buffer;
+    //}
+    //const wchar_t* res = L"a7a";
+    //return res;
+
+    int currTime = clock();
+    if (currTime - lastChecked >= checkingInterval)
+    {
+        DWORD bufferSize = 0;
+        GetTcpTable2(nullptr, &bufferSize, TRUE);//will fail and set bufferSize to the proper buffer size
+        buffer = (PMIB_TCPTABLE2)new BYTE[bufferSize];
+        GetTcpTable2(buffer, &bufferSize, TRUE);//get the tcp table
+        lastChecked = currTime;
     }
-    const wchar_t* res = L"a7a";
-    return res;
+
+    if (buffer == NULL)
+    {
+        return L"a7a";
+    }
+
+    // Iterate through the TCP connections and find the one using the specified port
+    for (DWORD i = 0; i < buffer->dwNumEntries; ++i)
+    {
+        auto tcpRow = buffer->table[i];
+        if (tcpRow.dwLocalPort == htons(port))//dwLocalPort is in network order
+        {
+            return IDToProcess(tcpRow.dwOwningPid);
+        }
+    }
+    return L"a7a";//pid not found
 }
 
 std::wstring ProcessGetter::IDToProcess(u_short pid)
