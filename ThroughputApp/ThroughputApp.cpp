@@ -116,8 +116,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // Store instance handle in our global variable
 
    hWnd = CreateWindowW(szWindowClass, L"Text", 0,
-       10, 10, 100, 100, nullptr, nullptr, hInstance, nullptr);
+       10, 10, 100, 80, nullptr, nullptr, hInstance, nullptr);
    SetWindowLong(hWnd, GWL_STYLE, 0);
+   SetWindowPos(hWnd, HWND_TOPMOST, 10, 10, 100, 100, SWP_NOSIZE);
    SetMenu(hWnd, NULL);
 
    //Add notification icon to the system tray
@@ -263,7 +264,7 @@ void PrintMessage(const double in, const double out, std::wstring process)
 {
     std::wstring message = L"In: " + DoubleToWString(in, 2) + L" KB/s\n";
     message += L"Out: " + DoubleToWString(out, 2) + L" KB/s\n";
-    message += L"Max usage process:\n " + process;
+    message += process;
     output = message.c_str();
 
     HDC hdc = GetDC(hWnd);
