@@ -4,6 +4,7 @@
 #include <ws2tcpip.h>
 #include <iphlpapi.h>
 #include <TlHelp32.h>
+#include <unordered_map>
 
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "iphlpapi.lib")
@@ -20,4 +21,5 @@ private:
 	PMIB_TCPTABLE2 buffer;
 	int checkingInterval;
 	int lastChecked;
+	std::unordered_map<u_short, std::wstring> portToProcess;
 };

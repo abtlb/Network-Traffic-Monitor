@@ -34,6 +34,10 @@ std::wstring ProcessGetter::PortToProcess(const u_short& port)
         GetTcpTable2(nullptr, &bufferSize, TRUE);//will fail and set bufferSize to the proper buffer size
         buffer = (PMIB_TCPTABLE2)new BYTE[bufferSize];
         GetTcpTable2(buffer, &bufferSize, TRUE);//get the tcp table
+        for (DWORD i = 0; i < buffer->dwNumEntries; i++)
+        {
+            portToProcess[buffer->table[i].dwLocalPort] = IDToProcess(buffer->table[i].dwOwningPid);
+        }
         lastChecked = currTime;
     }
 
@@ -48,7 +52,7 @@ std::wstring ProcessGetter::PortToProcess(const u_short& port)
         auto tcpRow = buffer->table[i];
         if (tcpRow.dwLocalPort == htons(port))//dwLocalPort is in network order
         {
-            return IDToProcess(tcpRow.dwOwningPid);
+            return portToProcess[tcpRow.dwLocalPort];
         }
     }
     return L"a7a";//pid not found

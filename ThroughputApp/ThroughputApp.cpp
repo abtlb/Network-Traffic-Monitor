@@ -116,7 +116,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // Store instance handle in our global variable
 
    hWnd = CreateWindowW(szWindowClass, L"Text", 0,
-       10, 10, 100, 80, nullptr, nullptr, hInstance, nullptr);
+       10, 10, 100, 50, nullptr, nullptr, hInstance, nullptr);
    SetWindowLong(hWnd, GWL_STYLE, 0);
    SetWindowPos(hWnd, HWND_TOPMOST, 10, 10, 100, 100, SWP_NOSIZE);
    SetMenu(hWnd, NULL);
@@ -229,6 +229,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         FillRect(hDC, &rect, blackBrush);//to prevent text from overlapping
         //I draw the text once, remove singleline flag
         DrawText(hDC, output, -1, &rect, DT_CENTER);
+        SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 100, 100, SWP_NOSIZE | SWP_NOMOVE);
     }
     break;
     case WM_DESTROY:
